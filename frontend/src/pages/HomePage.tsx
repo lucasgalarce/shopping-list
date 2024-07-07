@@ -7,6 +7,7 @@ import ItemModal from "src/components/ItemModal";
 
 const HomePage = () => {
   const [isModalShown, setIsModalShown] = useState(false);
+  const [itemToEdit, setItemToEdit] = useState<ItemType | null>(null);
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -16,10 +17,10 @@ const HomePage = () => {
 
   console.log("items ", data);
   console.log(isLoading);
-  const handleItemModal = () => {
+  const handleItemModal = (item?: ItemType | null) => {
+    setItemToEdit(item || null);
     setIsModalShown((prev) => !prev);
   };
-
   const mutation = useMutation({
     mutationFn: async ({
       id,
@@ -46,7 +47,11 @@ const HomePage = () => {
   return (
     <>
       {isModalShown && (
-        <ItemModal handleItemModal={handleItemModal} action="ADD" />
+        <ItemModal
+          handleItemModal={handleItemModal}
+          action={itemToEdit ? "Edit" : "Add"}
+          item={itemToEdit}
+        />
       )}
       <div className="container mx-auto border-2 border-red-500 p-4">
         {isLoading ? (
@@ -59,7 +64,7 @@ const HomePage = () => {
               <div className="mb-4 flex items-center justify-between">
                 <h1 className="text-xl font-bold">Your Items</h1>
                 <button
-                  onClick={handleItemModal}
+                  onClick={() => handleItemModal(null)}
                   className="rounded bg-blue-500 p-2 text-white"
                 >
                   Add Item
@@ -91,11 +96,14 @@ const HomePage = () => {
                     </div>
 
                     <div className="flex items-center space-x-2">
-                      <button className="text-blue-500 hover:text-blue-700">
-                        <i className="fas fa-edit"></i>
+                      <button
+                        className="hover:text-blue-700"
+                        onClick={() => handleItemModal(item)}
+                      >
+                        <Pencil />
                       </button>
-                      <button className="text-red-500 hover:text-red-700">
-                        <i className="fas fa-trash"></i>
+                      <button className=" hover:text-red-700">
+                        <Trash />
                       </button>
                     </div>
                   </div>
@@ -105,7 +113,7 @@ const HomePage = () => {
               <div className="flex flex-col items-center justify-center rounded border border-gray-300 p-6 shadow-md">
                 <p>Your shopping list is empty :(</p>
                 <button
-                  onClick={handleItemModal}
+                  onClick={() => handleItemModal(null)}
                   className="mt-4 rounded bg-blue-500 p-2 text-white"
                 >
                   Add your first item

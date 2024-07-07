@@ -13,7 +13,6 @@ const itemService = {
   },
 
   async createItem(title: string, description: string, quantity: number) {
-    console.log("createItem");
     const item = new Item();
 
     item.title = title;
@@ -25,12 +24,16 @@ const itemService = {
   },
 
   async updateItem(id: number, payload) {
-    const item = await Item.findOneBy({ id });
-    if (!item) throw new Error("Invalid id");
-    const result = await Item.update({ id }, payload);
-    if (result.affected === 0) throw new Error("Error");
+    try {
+      const item = await Item.findOneBy({ id });
+      if (!item) throw new Error("Invalid id");
+      const result = await Item.update({ id }, payload);
+      if (result.affected === 0) throw new Error("Error");
 
-    return;
+      return;
+    } catch (e) {
+      console.log(e);
+    }
   },
 
   async deleteItem(id: number) {

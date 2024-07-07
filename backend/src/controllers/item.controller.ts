@@ -25,8 +25,7 @@ const itemController = {
   async updateItem(req: Request, res: Response) {
     try {
       const { id } = req.params;
-
-      await itemService.updateItem(Number(id), req.body);
+      await itemService.updateItem(Number(id), req.body.data);
       return res.status(204).send();
     } catch (e) {
       return res.status(500).json({ error: e.message });

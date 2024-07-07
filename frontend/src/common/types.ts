@@ -16,4 +16,5 @@ export type CreateItemType = {
 export type ItemModalType = {
   handleItemModal: () => void;
   action: string;
+  item: ItemType | null;
 };

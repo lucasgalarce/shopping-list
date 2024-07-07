@@ -1,10 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
-import { createItem } from "../api/item";
+import { createItem, updateItem } from "../api/item";
 import { CreateItemType, ItemModalType } from "src/common/types";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
+const ItemModal: React.FC<ItemModalType> = ({
+  handleItemModal,
+  action,
+  item,
+}) => {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -13,8 +17,10 @@ const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
-    mutationFn: async (createItemData: CreateItemType) => {
-      return createItem(createItemData);
+    mutationFn: async (itemData: CreateItemType) => {
+      return action === "Add"
+        ? createItem(itemData)
+        : updateItem(item!.id, itemData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["items"] });
@@ -39,9 +45,18 @@ const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
     });
   };
 
+  useEffect(() => {
+    if (item !== null) {
+      setTitle(item.title);
+      setDescription(item.description);
+      setQuantity(item.quantity.toString());
+      setPurchased(item.purchased);
+    }
+  }, [item]);
+
   return (
-    <div className="absolute top-0 z-50 m-auto flex h-screen w-full items-center justify-center  bg-slate-400/50">
-      <div className="flex h-[600px] flex-col rounded-md  bg-white">
+    <div className="absolute top-0 z-50 m-auto flex h-screen w-full items-center justify-center bg-slate-400/50">
+      <div className="flex h-[600px] flex-col rounded-md bg-white">
         <div className="flex items-center justify-between bg-slate-100 p-5">
           <span className="uppercase">shopping list</span>
           <i>chevron</i>
@@ -49,21 +64,23 @@ const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
         <div className="flex h-full flex-col justify-between px-6">
           <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 pt-4">
             <div className="gap-y-1">
-              <h2>{action} an item</h2>
-              <p>{action} your new item below</p>
+              <h2>{action} an Item</h2>
+              <p>
+                {action} your {action === "Add" ? "new" : ""} item below
+              </p>
             </div>
             <div className="flex flex-col gap-y-4">
               <input
                 type="text"
                 placeholder="Item Name"
+                className="rounded-md border-2"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
               <textarea
-                className="resize-none"
+                className="resize-none rounded-md border-2"
                 name="description"
-                id=""
                 rows={10}
                 cols={50}
                 placeholder="Description"
@@ -85,19 +102,17 @@ const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
                 <option value={2}>2</option>
                 <option value={3}>3</option>
               </select>
-              {action === "EDIT" && (
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="purchased"
-                    checked={purchased}
-                    onChange={(e) => setPurchased(e.target.checked)}
-                  />
-                  <label htmlFor="purchased" className="ml-2">
-                    Purchased
-                  </label>
-                </div>
-              )}
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="purchased"
+                  checked={purchased}
+                  onChange={(e) => setPurchased(e.target.checked)}
+                />
+                <label htmlFor="purchased" className="ml-2">
+                  Purchased
+                </label>
+              </div>
             </div>
             <div className="flex justify-end gap-x-4 pb-4">
               <button
@@ -115,7 +130,7 @@ const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
                 {isLoading ? (
                   <LoaderCircle className="animate-spin" />
                 ) : (
-                  "Add Item"
+                  `${action === "Add" ? "Add Task" : "Save Item"} `
                 )}
               </button>
             </div>
@@ -127,7 +142,3 @@ const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
 };
 
 export default ItemModal;
-
-// {isLoading ? (
-//   <LoaderCircle className="animate-spin" />
-// ) : (

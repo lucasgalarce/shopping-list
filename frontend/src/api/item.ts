@@ -31,6 +31,12 @@ export const changeStatus = async (id: number, purchased: boolean) => {
   return response.data;
 };
 
+export const updateItem = async (id: number, data: CreateItemType) => {
+  const response = await api.put(`${base}/${id}`, { data });
+
+  return response.data;
+};
+
 export const deleteItem = async (id: number) => {
   await api.delete(`${base}/${id}`);
 };
