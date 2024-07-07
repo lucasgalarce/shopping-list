@@ -69,7 +69,7 @@ const HomePage = () => {
       <div className="container mx-auto border-2 border-red-500 p-4">
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
-            <LoaderCircle className="h-12 w-12 animate-spin text-blue-500" />
+            <LoaderCircle className="text-blue-check h-12 w-12 animate-spin" />
           </div>
         ) : (
           <>
@@ -78,7 +78,7 @@ const HomePage = () => {
                 <h1 className="text-xl font-bold">Your Items</h1>
                 <button
                   onClick={() => handleItemModal(null)}
-                  className="rounded bg-blue-500 p-2 text-white"
+                  className="bg-blue rounded p-2 text-white"
                 >
                   Add Item
                 </button>
@@ -101,7 +101,11 @@ const HomePage = () => {
                         }
                       />
                       <div className={item.purchased ? "line-through" : ""}>
-                        <h3 className="text-lg font-semibold">{item.title}</h3>
+                        <h3
+                          className={`text-lg font-semibold ${item.purchased ? "text-blue-check" : ""}`}
+                        >
+                          {item.title}
+                        </h3>
                         <p className="text-sm text-gray-600">
                           {item.description}
                         </p>
@@ -110,7 +114,7 @@ const HomePage = () => {
 
                     <div className="flex items-center space-x-2">
                       <button
-                        className="hover:text-blue-700"
+                        className="hover:text-blue"
                         onClick={() => handleItemModal(item)}
                       >
                         <Pencil />
@@ -130,7 +134,7 @@ const HomePage = () => {
                 <p>Your shopping list is empty :(</p>
                 <button
                   onClick={() => handleItemModal(null)}
-                  className="mt-4 rounded bg-blue-500 p-2 text-white"
+                  className="bg-blue mt-4 rounded p-2 text-white"
                 >
                   Add your first item
                 </button>

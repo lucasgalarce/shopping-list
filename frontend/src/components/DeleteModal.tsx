@@ -47,7 +47,7 @@ const DeleteModal: React.FC<DeleteModalType> = ({
           <button
             type="button"
             onClick={handleDelete}
-            className="rounded bg-blue-500 p-2 text-white"
+            className="bg-blue rounded p-2 text-white"
             disabled={isLoading}
           >
             {isLoading ? "Deleting..." : "Delete"}

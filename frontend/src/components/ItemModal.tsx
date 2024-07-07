@@ -126,7 +126,7 @@ const ItemModal: React.FC<ItemModalType> = ({
               </button>
               <button
                 type="submit"
-                className="flex items-center justify-center rounded bg-blue-500 p-2 text-white"
+                className="bg-blue flex items-center justify-center rounded p-2 text-white"
                 disabled={isLoading}
               >
                 {isLoading ? (
