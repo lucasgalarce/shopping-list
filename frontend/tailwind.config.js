@@ -11,6 +11,7 @@ export default {
       colors: {
         blue: "#1871E8",
         "blue-check": "#4D81B7",
+        "light-gray": "#5C6269",
       },
     },
   },

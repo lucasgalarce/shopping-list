@@ -3,6 +3,13 @@ import { ChevronRight, LoaderCircle } from "lucide-react";
 import { createItem, updateItem } from "../api/item";
 import { Actions, CreateItemType, ItemModalType } from "src/common/types";
 import { FormEvent, useEffect, useState } from "react";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 const ItemModal: React.FC<ItemModalType> = ({
   handleItemModal,
@@ -56,7 +63,7 @@ const ItemModal: React.FC<ItemModalType> = ({
 
   return (
     <div className="absolute top-0 z-50 m-auto flex h-screen w-full items-center justify-center bg-slate-400/50">
-      <div className="flex h-[600px] flex-col rounded-md bg-white">
+      <div className="flex h-[600px] w-full max-w-lg flex-col rounded-md bg-white">
         <div className="flex items-center justify-between bg-slate-100 p-5">
           <span className="uppercase">shopping list</span>
           <ChevronRight />
@@ -72,40 +79,39 @@ const ItemModal: React.FC<ItemModalType> = ({
                 {action} your {action === "Add" ? "new" : ""} item below
               </p>
             </div>
-            <div className="flex flex-col gap-y-4">
-              <input
-                type="text"
-                placeholder="Item Name"
-                className="rounded-md border-2 p-2"
+            <div className="flex flex-grow flex-col gap-y-4">
+              <TextField
+                label="Item Name"
+                variant="outlined"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
+                fullWidth
               />
-              <textarea
-                className="resize-none rounded-md border-2 p-2"
-                name="description"
+              <TextField
+                label="Description"
+                variant="outlined"
+                multiline
                 rows={5}
-                cols={50}
-                placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
-              ></textarea>
-              <select
-                name="quantity"
-                id="quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                required
-                className="border-2 p-2"
-              >
-                <option value="" disabled>
-                  How many?
-                </option>
-                <option value={1}>1</option>
-                <option value={2}>2</option>
-                <option value={3}>3</option>
-              </select>
+                fullWidth
+              />
+              <FormControl variant="outlined" required fullWidth>
+                <InputLabel id="quantity-label">How many?</InputLabel>
+                <Select
+                  labelId="quantity-label"
+                  id="quantity"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  label="How many?"
+                >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                </Select>
+              </FormControl>
               {action === Actions.EDIT && (
                 <div className="flex items-center">
                   <input
