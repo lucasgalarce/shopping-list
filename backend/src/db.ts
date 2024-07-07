@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { Task } from "./entities/Task";
+import { Item } from "./entities/Item";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -10,5 +10,5 @@ export const AppDataSource = new DataSource({
   database: "shopping-db",
   synchronize: true,
   // logging: true,
-  entities: [Task],
+  entities: [Item],
 });

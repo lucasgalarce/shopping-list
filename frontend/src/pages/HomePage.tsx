@@ -1,68 +1,74 @@
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { fetchItems } from "src/api/item";
+import { ItemType } from "src/common/types";
+import ItemModal from "src/components/ItemModal";
 
 const HomePage = () => {
-  const task = {
-    title: "test",
-    description: "test",
-    status: "TO_DO",
-  };
+  const [isModalShown, setIsModalShown] = useState(false);
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
+  const { data, isLoading } = useQuery({
+    queryKey: ["sales"],
+    queryFn: async () => fetchItems(),
+  });
 
-  const createTask = async () => {
-    console.log("createTask");
-    console.log("title");
-    const url = `http://localhost:3000/api/tasks`;
-    const result = await axios.post(url, { title, description, status });
-    console.log(result);
+  console.log("items ", data);
+  console.log(isLoading);
+  const handleItemModal = () => {
+    setIsModalShown((prev) => !prev);
   };
 
   return (
-    <div className="container mx-auto flex  items-center justify-center">
-      <div className="flex w-full flex-wrap items-center justify-around">
-        <form>
-          <div>
-            <label>
-              title:
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </label>
+    <>
+      {isModalShown && <ItemModal handleItemModal={handleItemModal} />}
+      <div className="mx-auto max-w-2xl p-4">
+        <div className="mb-4 flex items-center justify-between">
+          <h1 className="text-xl font-bold">Your Items</h1>
+          <button
+            onClick={handleItemModal}
+            className="rounded bg-blue-500 p-2 text-white"
+          >
+            Add Item
+          </button>
+        </div>
+        {data && data?.length > 0 ? (
+          <div className="space-y-2">
+            {data.map((item: ItemType) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between rounded border border-gray-300 p-4 shadow-sm hover:bg-gray-100"
+              >
+                <div className="flex items-center">
+                  <input type="checkbox" className="mr-2" />
+                  <div>
+                    <h3 className="text-lg font-semibold">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.description}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <button className="text-blue-500 hover:text-blue-700">
+                    <i className="fas fa-edit"></i>
+                  </button>
+                  <button className="text-red-500 hover:text-red-700">
+                    <i className="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-          <div>
-            <label>
-              description:
-              <input
-                type="text"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </label>
-          </div>
-          <label>
-            status:
-            <input
-              type="text"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            />
-          </label>
-          <div>
+        ) : (
+          <div className="flex flex-col items-center justify-center rounded border border-gray-300 p-6 shadow-md">
+            <p>Your shopping list is empty :(</p>
             <button
-              className="border-2 border-red-500"
-              onClick={() => createTask()}
+              onClick={handleItemModal}
+              className="mt-4 rounded bg-blue-500 p-2 text-white"
             >
-              Create Task
+              Add your first item
             </button>
           </div>
-        </form>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

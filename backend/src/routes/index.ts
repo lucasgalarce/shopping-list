@@ -1,10 +1,10 @@
 import { Router } from "express";
-import task from "./task.routes";
+import item from "./item.routes";
 
 export default () => {
   const router = Router();
 
-  task(router);
+  item(router);
 
   return router;
 };

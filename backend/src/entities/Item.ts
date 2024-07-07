@@ -6,10 +6,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Status } from "../common/types";
 
 @Entity()
-export class Task extends BaseEntity {
+export class Item extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,12 +18,11 @@ export class Task extends BaseEntity {
   @Column()
   description: string;
 
-  @Column({
-    type: "enum",
-    enum: Status,
-    default: Status.TO_DO,
-  })
-  status: Status;
+  @Column()
+  quantity: number;
+
+  @Column()
+  status: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
