@@ -18,3 +18,8 @@ export type ItemModalType = {
   action: string;
   item: ItemType | null;
 };
+
+export type DeleteModalType = {
+  handleDeleteModal: () => void;
+  itemId: number | null;
+};

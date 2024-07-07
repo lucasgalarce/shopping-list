@@ -3,11 +3,14 @@ import { LoaderCircle, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import { changeStatus, fetchItems } from "src/api/item";
 import { ItemType } from "src/common/types";
+import DeleteModal from "src/components/DeleteModal";
 import ItemModal from "src/components/ItemModal";
 
 const HomePage = () => {
-  const [isModalShown, setIsModalShown] = useState(false);
+  const [isItemModalShown, setIsItemModalShown] = useState(false);
+  const [isDeleteModalShown, setIsDeleteModalShown] = useState(false);
   const [itemToEdit, setItemToEdit] = useState<ItemType | null>(null);
+  const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -15,12 +18,16 @@ const HomePage = () => {
     queryFn: async () => fetchItems(),
   });
 
-  console.log("items ", data);
-  console.log(isLoading);
   const handleItemModal = (item?: ItemType | null) => {
     setItemToEdit(item || null);
-    setIsModalShown((prev) => !prev);
+    setIsItemModalShown((prev) => !prev);
   };
+
+  const handleDeleteModal = (itemId?: number | null) => {
+    setItemIdToDelete(itemId || null);
+    setIsDeleteModalShown((prev) => !prev);
+  };
+
   const mutation = useMutation({
     mutationFn: async ({
       id,
@@ -46,11 +53,17 @@ const HomePage = () => {
 
   return (
     <>
-      {isModalShown && (
+      {isItemModalShown && (
         <ItemModal
           handleItemModal={handleItemModal}
-          action={itemToEdit ? "Edit" : "Add"}
+          action={itemToEdit ? "EDIT" : "ADD"}
           item={itemToEdit}
+        />
+      )}
+      {isDeleteModalShown && (
+        <DeleteModal
+          handleDeleteModal={handleDeleteModal}
+          itemId={itemIdToDelete}
         />
       )}
       <div className="container mx-auto border-2 border-red-500 p-4">
@@ -102,7 +115,10 @@ const HomePage = () => {
                       >
                         <Pencil />
                       </button>
-                      <button className=" hover:text-red-700">
+                      <button
+                        className="hover:text-red-700"
+                        onClick={() => handleDeleteModal(item.id)}
+                      >
                         <Trash />
                       </button>
                     </div>

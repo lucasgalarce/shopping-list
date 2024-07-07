@@ -32,7 +32,7 @@ export const changeStatus = async (id: number, purchased: boolean) => {
 };
 
 export const updateItem = async (id: number, data: CreateItemType) => {
-  const response = await api.put(`${base}/${id}`, { data });
+  const response = await api.put(`${base}/${id}`, { ...data });
 
   return response.data;
 };
