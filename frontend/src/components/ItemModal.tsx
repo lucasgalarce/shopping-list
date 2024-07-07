@@ -62,7 +62,10 @@ const ItemModal: React.FC<ItemModalType> = ({
           <ChevronRight />
         </div>
         <div className="flex h-full flex-col justify-between px-6">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 pt-4">
+          <form
+            onSubmit={handleSubmit}
+            className="flex h-full flex-col gap-y-4 pt-4"
+          >
             <div className="gap-y-1">
               <h2>{action} an Item</h2>
               <p>
@@ -73,15 +76,15 @@ const ItemModal: React.FC<ItemModalType> = ({
               <input
                 type="text"
                 placeholder="Item Name"
-                className="rounded-md border-2"
+                className="rounded-md border-2 p-2"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
               <textarea
-                className="resize-none rounded-md border-2"
+                className="resize-none rounded-md border-2 p-2"
                 name="description"
-                rows={10}
+                rows={5}
                 cols={50}
                 placeholder="Description"
                 value={description}
@@ -94,6 +97,7 @@ const ItemModal: React.FC<ItemModalType> = ({
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 required
+                className="border-2 p-2"
               >
                 <option value="" disabled>
                   How many?
@@ -116,7 +120,7 @@ const ItemModal: React.FC<ItemModalType> = ({
                 </div>
               )}
             </div>
-            <div className="flex justify-end gap-x-4 pb-4">
+            <div className="mt-auto flex justify-end gap-x-4 pb-4">
               <button
                 type="button"
                 onClick={handleItemModal}
