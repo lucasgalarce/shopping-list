@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ChevronRight, LoaderCircle } from "lucide-react";
 import { createItem, updateItem } from "../api/item";
-import { CreateItemType, ItemModalType } from "src/common/types";
+import { Actions, CreateItemType, ItemModalType } from "src/common/types";
 import { FormEvent, useEffect, useState } from "react";
 
 const ItemModal: React.FC<ItemModalType> = ({
@@ -102,17 +102,19 @@ const ItemModal: React.FC<ItemModalType> = ({
                 <option value={2}>2</option>
                 <option value={3}>3</option>
               </select>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="purchased"
-                  checked={purchased}
-                  onChange={(e) => setPurchased(e.target.checked)}
-                />
-                <label htmlFor="purchased" className="ml-2">
-                  Purchased
-                </label>
-              </div>
+              {action === Actions.EDIT && (
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="purchased"
+                    checked={purchased}
+                    onChange={(e) => setPurchased(e.target.checked)}
+                  />
+                  <label htmlFor="purchased" className="ml-2">
+                    Purchased
+                  </label>
+                </div>
+              )}
             </div>
             <div className="flex justify-end gap-x-4 pb-4">
               <button
@@ -130,7 +132,7 @@ const ItemModal: React.FC<ItemModalType> = ({
                 {isLoading ? (
                   <LoaderCircle className="animate-spin" />
                 ) : (
-                  `${action === "Add" ? "Add Task" : "Save Item"} `
+                  `${action === Actions.ADD ? "Add Task" : "Save Item"} `
                 )}
               </button>
             </div>

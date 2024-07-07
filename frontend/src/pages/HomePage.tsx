@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LoaderCircle, Pencil, Trash } from "lucide-react";
 import { useState } from "react";
 import { changeStatus, fetchItems } from "src/api/item";
-import { ItemType } from "src/common/types";
+import { Actions, ItemType } from "src/common/types";
 import DeleteModal from "src/components/DeleteModal";
 import ItemModal from "src/components/ItemModal";
 
@@ -56,7 +56,7 @@ const HomePage = () => {
       {isItemModalShown && (
         <ItemModal
           handleItemModal={handleItemModal}
-          action={itemToEdit ? "EDIT" : "ADD"}
+          action={itemToEdit ? Actions.EDIT : Actions.ADD}
           item={itemToEdit}
         />
       )}

@@ -23,3 +23,8 @@ export type DeleteModalType = {
   handleDeleteModal: () => void;
   itemId: number | null;
 };
+
+export enum Actions {
+  EDIT = "Edit",
+  ADD = "Add",
+}
