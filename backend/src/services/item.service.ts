@@ -1,8 +1,14 @@
+import { FindManyOptions } from "typeorm";
 import { Item } from "../entities/Item";
 
 const itemService = {
   async getItems() {
-    const items = await Item.find();
+    const options: FindManyOptions = {
+      order: {
+        createdAt: "ASC",
+      },
+    };
+    const items = await Item.find(options);
     return items;
   },
 
@@ -13,7 +19,7 @@ const itemService = {
     item.title = title;
     item.description = description;
     item.quantity = quantity;
-    item.status = false;
+    item.purchased = false;
 
     return item.save();
   },

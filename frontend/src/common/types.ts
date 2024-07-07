@@ -3,11 +3,17 @@ export type ItemType = {
   title: string;
   description: string;
   quantity: number;
-  status: boolean;
+  purchased: boolean;
 };
 
 export type CreateItemType = {
   title: string;
   description: string;
   quantity: number;
+  purchased: boolean;
+};
+
+export type ItemModalType = {
+  handleItemModal: () => void;
+  action: string;
 };

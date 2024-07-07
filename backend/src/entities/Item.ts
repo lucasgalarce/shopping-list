@@ -22,7 +22,7 @@ export class Item extends BaseEntity {
   quantity: number;
 
   @Column()
-  status: boolean;
+  purchased: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -15,7 +15,6 @@ const itemController = {
   async createItem(req: Request<ItemBody>, res: Response) {
     try {
       const { title, description, quantity } = req.body;
-
       await itemService.createItem(title, description, quantity);
       return res.status(201).send();
     } catch (e) {

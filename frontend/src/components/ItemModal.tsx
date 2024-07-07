@@ -1,14 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { LoaderCircle } from "lucide-react";
 import { createItem } from "../api/item";
-import { CreateItemType } from "src/common/types";
-import { useState } from "react";
+import { CreateItemType, ItemModalType } from "src/common/types";
+import { FormEvent, useState } from "react";
 
-const ItemModal = ({ handleItemModal }) => {
+const ItemModal: React.FC<ItemModalType> = ({ handleItemModal, action }) => {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [quantity, setQuantity] = useState("TO_DO");
+  const [quantity, setQuantity] = useState("");
+  const [purchased, setPurchased] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const mutation = useMutation({
@@ -22,20 +23,25 @@ const ItemModal = ({ handleItemModal }) => {
     },
     onError: (error: unknown) => {
       setIsLoading(false);
-      let errorMessage = "An unexpected error occurred";
+      const errorMessage = "An unexpected error occurred";
       console.error(errorMessage, error);
     },
   });
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
-    mutation.mutate({ title, description, quantity: Number(quantity) });
+    mutation.mutate({
+      title,
+      description,
+      quantity: Number(quantity),
+      purchased,
+    });
   };
 
   return (
-    <div className="absolute top-0 z-50 m-auto flex h-screen w-full items-center justify-center bg-slate-400/50">
-      <div className="flex h-[600px] flex-col rounded-md bg-white ">
+    <div className="absolute top-0 z-50 m-auto flex h-screen w-full items-center justify-center  bg-slate-400/50">
+      <div className="flex h-[600px] flex-col rounded-md  bg-white">
         <div className="flex items-center justify-between bg-slate-100 p-5">
           <span className="uppercase">shopping list</span>
           <i>chevron</i>
@@ -43,8 +49,8 @@ const ItemModal = ({ handleItemModal }) => {
         <div className="flex h-full flex-col justify-between px-6">
           <form onSubmit={handleSubmit} className="flex flex-col gap-y-4 pt-4">
             <div className="gap-y-1">
-              <h2>ADD/EDIT an item</h2>
-              <p>ADD/EDIT your new item below</p>
+              <h2>{action} an item</h2>
+              <p>{action} your new item below</p>
             </div>
             <div className="flex flex-col gap-y-4">
               <input
@@ -72,10 +78,26 @@ const ItemModal = ({ handleItemModal }) => {
                 onChange={(e) => setQuantity(e.target.value)}
                 required
               >
-                <option value="test">test</option>
-                <option value="test2">test2</option>
-                <option value="test3">test3</option>
+                <option value="" disabled>
+                  How many?
+                </option>
+                <option value={1}>1</option>
+                <option value={2}>2</option>
+                <option value={3}>3</option>
               </select>
+              {action === "EDIT" && (
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="purchased"
+                    checked={purchased}
+                    onChange={(e) => setPurchased(e.target.checked)}
+                  />
+                  <label htmlFor="purchased" className="ml-2">
+                    Purchased
+                  </label>
+                </div>
+              )}
             </div>
             <div className="flex justify-end gap-x-4 pb-4">
               <button
