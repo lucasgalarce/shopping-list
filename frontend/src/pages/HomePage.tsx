@@ -66,7 +66,7 @@ const HomePage = () => {
           itemId={itemIdToDelete}
         />
       )}
-      <div className="container mx-auto p-4">
+      <div className="mx-auto w-[1025px] border-2 border-red-500">
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
             <LoaderCircle className="h-12 w-12 animate-spin text-blue-check" />
@@ -75,18 +75,18 @@ const HomePage = () => {
           <>
             {data && data.length > 0 ? (
               <>
-                <div className="mb-4 flex items-center justify-between">
+                <div className="mb-4 flex items-end justify-between">
                   <h1 className="text-xl font-bold">Your Items</h1>
                   <button
                     onClick={() => handleItemModal(null)}
-                    className="rounded bg-blue p-2 text-white"
+                    className="rounded bg-blue px-4 py-2 text-white"
                   >
                     Add Item
                   </button>
                 </div>
-                <div className="max-h-[500px] space-y-2 overflow-y-auto">
+                <ul className="max-h-[500px] space-y-2 overflow-y-auto">
                   {data.map((item: ItemType) => (
-                    <div
+                    <li
                       key={item.id}
                       className="flex items-center justify-between rounded border border-gray-300 p-4 shadow-sm hover:bg-gray-100"
                     >
@@ -127,9 +127,9 @@ const HomePage = () => {
                           <Trash />
                         </button>
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </>
             ) : (
               <div className="flex flex-col items-center justify-center rounded border border-gray-300 p-6 shadow-md">
