@@ -1,7 +1,8 @@
 {
-  "name": "tu-proyecto",
+  "name": "shopping-list",
   "version": "1.0.0",
   "scripts": {
+    "setup": "npm install && npx concurrently \"cd backend && npm install\" \"cd frontend && npm install\"",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "cd backend && npm run dev",
     "start:frontend": "cd frontend && npm run dev"

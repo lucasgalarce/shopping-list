@@ -99,6 +99,7 @@ const ItemModal: React.FC<ItemModalType> = ({
                   onChange={(e) => setDescription(e.target.value)}
                   required
                   fullWidth
+                  inputProps={{ maxLength: 100 }}
                 />
                 <Typography
                   variant="body2"
