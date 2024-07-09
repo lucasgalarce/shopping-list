@@ -66,75 +66,77 @@ const HomePage = () => {
           itemId={itemIdToDelete}
         />
       )}
-      <div className="container mx-auto border-2 border-red-500 p-4">
+      <div className="container mx-auto p-4">
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
-            <LoaderCircle className="text-blue-check h-12 w-12 animate-spin" />
+            <LoaderCircle className="h-12 w-12 animate-spin text-blue-check" />
           </div>
         ) : (
           <>
-            {data && data.length > 0 && (
-              <div className="mb-4 flex items-center justify-between">
-                <h1 className="text-xl font-bold">Your Items</h1>
-                <button
-                  onClick={() => handleItemModal(null)}
-                  className="bg-blue rounded p-2 text-white"
-                >
-                  Add Item
-                </button>
-              </div>
-            )}
             {data && data.length > 0 ? (
-              <div className="space-y-2">
-                {data.map((item: ItemType) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center justify-between rounded border border-gray-300 p-4 shadow-sm hover:bg-gray-100"
+              <>
+                <div className="mb-4 flex items-center justify-between">
+                  <h1 className="text-xl font-bold">Your Items</h1>
+                  <button
+                    onClick={() => handleItemModal(null)}
+                    className="rounded bg-blue p-2 text-white"
                   >
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        className="mr-2"
-                        checked={item.purchased}
-                        onChange={() =>
-                          handleChangeStatus(item.id, !item.purchased)
-                        }
-                      />
-                      <div className={item.purchased ? "line-through" : ""}>
-                        <h3
-                          className={`text-lg font-semibold ${item.purchased ? "text-blue-check" : ""}`}
+                    Add Item
+                  </button>
+                </div>
+                <div className="max-h-[500px] space-y-2 overflow-y-auto">
+                  {data.map((item: ItemType) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between rounded border border-gray-300 p-4 shadow-sm hover:bg-gray-100"
+                    >
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          className="mr-2"
+                          checked={item.purchased}
+                          onChange={() =>
+                            handleChangeStatus(item.id, !item.purchased)
+                          }
+                        />
+                        <div className={item.purchased ? "line-through" : ""}>
+                          <h3
+                            className={`text-lg font-semibold ${
+                              item.purchased ? "text-blue-check" : ""
+                            }`}
+                          >
+                            {item.title}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-2">
+                        <button
+                          className="hover:text-blue"
+                          onClick={() => handleItemModal(item)}
                         >
-                          {item.title}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {item.description}
-                        </p>
+                          <Pencil />
+                        </button>
+                        <button
+                          className="hover:text-red-700"
+                          onClick={() => handleDeleteModal(item.id)}
+                        >
+                          <Trash />
+                        </button>
                       </div>
                     </div>
-
-                    <div className="flex items-center space-x-2">
-                      <button
-                        className="hover:text-blue"
-                        onClick={() => handleItemModal(item)}
-                      >
-                        <Pencil />
-                      </button>
-                      <button
-                        className="hover:text-red-700"
-                        onClick={() => handleDeleteModal(item.id)}
-                      >
-                        <Trash />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              </>
             ) : (
               <div className="flex flex-col items-center justify-center rounded border border-gray-300 p-6 shadow-md">
                 <p>Your shopping list is empty :(</p>
                 <button
                   onClick={() => handleItemModal(null)}
-                  className="bg-blue mt-4 rounded p-2 text-white"
+                  className="mt-4 rounded bg-blue p-2 text-white"
                 >
                   Add your first item
                 </button>

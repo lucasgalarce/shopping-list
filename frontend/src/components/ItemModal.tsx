@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 
 const ItemModal: React.FC<ItemModalType> = ({
@@ -75,7 +76,7 @@ const ItemModal: React.FC<ItemModalType> = ({
           >
             <div className="gap-y-1">
               <h2>{action} an Item</h2>
-              <p>
+              <p className="text-sm text-light-gray">
                 {action} your {action === "Add" ? "new" : ""} item below
               </p>
             </div>
@@ -88,16 +89,25 @@ const ItemModal: React.FC<ItemModalType> = ({
                 required
                 fullWidth
               />
-              <TextField
-                label="Description"
-                variant="outlined"
-                multiline
-                rows={5}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                fullWidth
-              />
+              <div className="relative">
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  multiline
+                  rows={5}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  fullWidth
+                />
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  className="absolute bottom-2 right-4"
+                >
+                  {description.length}/100
+                </Typography>
+              </div>
               <FormControl variant="outlined" required fullWidth>
                 <InputLabel id="quantity-label">How many?</InputLabel>
                 <Select
@@ -136,7 +146,7 @@ const ItemModal: React.FC<ItemModalType> = ({
               </button>
               <button
                 type="submit"
-                className="bg-blue flex items-center justify-center rounded p-2 text-white"
+                className="flex items-center justify-center rounded bg-blue p-2 text-white"
                 disabled={isLoading}
               >
                 {isLoading ? (
