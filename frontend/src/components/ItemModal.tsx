@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, LoaderCircle } from "lucide-react";
+import { ChevronLast, LoaderCircle } from "lucide-react";
 import { createItem, updateItem } from "../api/item";
 import { Actions, CreateItemType, ItemModalType } from "src/common/types";
 import { FormEvent, useEffect, useState } from "react";
@@ -67,7 +67,7 @@ const ItemModal: React.FC<ItemModalType> = ({
       <div className="flex h-[600px] w-full max-w-lg flex-col rounded-md bg-white">
         <div className="flex items-center justify-between bg-slate-100 p-5">
           <span className="uppercase">shopping list</span>
-          <ChevronRight />
+          <ChevronLast />
         </div>
         <div className="flex h-full flex-col justify-between px-6">
           <form

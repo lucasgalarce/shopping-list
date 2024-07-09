@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LoaderCircle, Pencil, Trash } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import { useState } from "react";
-import { changeStatus, fetchItems } from "src/api/item";
-import { Actions, ItemType } from "src/common/types";
-import DeleteModal from "src/components/DeleteModal";
-import ItemModal from "src/components/ItemModal";
+import { changeStatus, fetchItems } from "../api/item";
+import { Actions, ItemType } from "../common/types";
+import DeleteModal from "../components/DeleteModal";
+import ItemModal from "../components/ItemModal";
+import ListItem from "../components/ListItem";
 
 const HomePage = () => {
   const [isItemModalShown, setIsItemModalShown] = useState(false);
@@ -66,15 +67,15 @@ const HomePage = () => {
           itemId={itemIdToDelete}
         />
       )}
-      <div className="mx-auto w-[1025px] border-2 border-red-500">
+      <div className="relative mx-auto h-full w-[1025px] py-5">
         {isLoading ? (
           <div className="flex h-full items-center justify-center">
             <LoaderCircle className="h-12 w-12 animate-spin text-blue-check" />
           </div>
         ) : (
-          <>
+          <div className="flex h-full w-full flex-col items-center justify-center ">
             {data && data.length > 0 ? (
-              <>
+              <div className="flex h-full w-full flex-col">
                 <div className="mb-4 flex items-end justify-between">
                   <h1 className="text-xl font-bold">Your Items</h1>
                   <button
@@ -84,65 +85,30 @@ const HomePage = () => {
                     Add Item
                   </button>
                 </div>
-                <ul className="max-h-[500px] space-y-2 overflow-y-auto">
+                <ul className="h-full space-y-2 overflow-y-auto ">
                   {data.map((item: ItemType) => (
-                    <li
+                    <ListItem
                       key={item.id}
-                      className="flex items-center justify-between rounded border border-gray-300 p-4 shadow-sm hover:bg-gray-100"
-                    >
-                      <div className="flex items-center">
-                        <input
-                          type="checkbox"
-                          className="mr-2"
-                          checked={item.purchased}
-                          onChange={() =>
-                            handleChangeStatus(item.id, !item.purchased)
-                          }
-                        />
-                        <div className={item.purchased ? "line-through" : ""}>
-                          <h3
-                            className={`text-lg font-semibold ${
-                              item.purchased ? "text-blue-check" : ""
-                            }`}
-                          >
-                            {item.title}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="hover:text-blue"
-                          onClick={() => handleItemModal(item)}
-                        >
-                          <Pencil />
-                        </button>
-                        <button
-                          className="hover:text-red-700"
-                          onClick={() => handleDeleteModal(item.id)}
-                        >
-                          <Trash />
-                        </button>
-                      </div>
-                    </li>
+                      item={item}
+                      handleItemModal={handleItemModal}
+                      handleDeleteModal={handleDeleteModal}
+                      handleChangeStatus={handleChangeStatus}
+                    />
                   ))}
                 </ul>
-              </>
+              </div>
             ) : (
-              <div className="flex flex-col items-center justify-center rounded border border-gray-300 p-6 shadow-md">
-                <p>Your shopping list is empty :(</p>
+              <div className="flex h-[300px] w-[600px] flex-col items-center justify-center rounded border border-gray-300 p-6 shadow-md">
+                <p>Your shopping list is empty 😥</p>
                 <button
                   onClick={() => handleItemModal(null)}
-                  className="mt-4 rounded bg-blue p-2 text-white"
+                  className="mt-4 rounded bg-blue px-4 py-2 text-white"
                 >
                   Add your first item
                 </button>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </>

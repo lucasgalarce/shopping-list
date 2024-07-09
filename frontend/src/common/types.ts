@@ -19,6 +19,13 @@ export type ItemModalType = {
   item: ItemType | null;
 };
 
+export type ListItemType = {
+  item: ItemType;
+  handleItemModal: (item: ItemType) => void;
+  handleDeleteModal: (id: number) => void;
+  handleChangeStatus: (id: number, purchased: boolean) => void;
+};
+
 export type DeleteModalType = {
   handleDeleteModal: () => void;
   itemId: number | null;
